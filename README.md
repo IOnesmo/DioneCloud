@@ -19,3 +19,12 @@
 <img width="960" height="421" alt="login-page" src="https://github.com/user-attachments/assets/c72fdb9e-ba69-4eda-905a-e247b8cb9c16" />
 <img width="191" height="363" alt="Mobile device" src="https://github.com/user-attachments/assets/1bb3902f-4f87-46df-8538-98bfcb04e67c" />
 <img width="949" height="417" alt="register-page" src="https://github.com/user-attachments/assets/bf9eb625-ffed-4877-9c11-404fe98d1c31" />
+
+
+https://github.com/user-attachments/assets/2c3a4fb6-9a9d-465b-85b4-fc75dcba5c2d
+
+<img width="960" height="443" alt="dash1" src="https://github.com/user-attachments/assets/9cc976ac-d26f-4352-970c-779e6cfb6cf4" />
+<img width="960" height="449" alt="dash2" src="https://github.com/user-attachments/assets/837457a8-4989-413b-87cf-5d05d50ea11f" />
+<img width="960" height="446" alt="dash3" src="https://github.com/user-attachments/assets/8044fb26-e692-4ab8-8517-039046cee96d" />
+<img width="960" height="445" alt="dash4" src="https://github.com/user-attachments/assets/5927d74a-a09d-46bf-93de-b2a4a3ff30ed" />
+<img width="960" height="443" alt="dash5" src="https://github.com/user-attachments/assets/204e6710-8ee7-4435-b311-4d27afa07292" />
