@@ -8,31 +8,26 @@ use Laravel\Socialite\Facades\Socialite;
 
 class CloudProviderController extends Controller
 {
-public function redirectToGoogle()
-{
-    return Socialite::driver('google')
-        ->scopes([
-            'https://www.googleapis.com/auth/drive',
-            'email',
-            'profile',
-            'openid'
-        ])
-        ->with([
-            'prompt' => 'select_account',
-            'access_type' => 'offline',
-            'response_type' => 'code'
-        ])
-        ->redirect();
-}
+      public function redirectToGoogle()
+    {
+        return Socialite::driver('google')
+            ->scopes([
+                'https://www.googleapis.com/auth/drive',
+                'email',
+                'profile',
+                'openid'
+            ])
+            ->with([
+                'prompt' => 'consent', // Changed to consent to force new token
+                'access_type' => 'offline', // CRITICAL: This gets the refresh token
+            ])
+            ->redirect();
+    }
+
     public function handleGoogleCallback()
     {
         try {
             $socialUser = Socialite::driver('google')->user();
-               dd('Google is trying to connect this email:', $socialUser->email);
-
-            if (!Auth::check()) {
-                return redirect('/login')->with('error', 'You must be logged in.');
-            }
 
             if (!Auth::check()) {
                 return redirect('/login')->with('error', 'You must be logged in.');
@@ -46,7 +41,7 @@ public function redirectToGoogle()
                 'access_token' => $socialUser->token,
                 'refresh_token' => $socialUser->refreshToken,
                 'expires_at' => now()->addSeconds($socialUser->expiresIn ?? 14400),
-                'email' => $socialUser->email, // THIS SAVES THE EMAIL
+                'email' => $socialUser->email,
             ];
 
             if ($linkedAccount) {

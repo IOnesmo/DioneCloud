@@ -14,7 +14,6 @@ class GoogleDriveService
     public function __construct($linkedAccount)
     {
         $this->account = $linkedAccount;
-
         if (!$this->account) {
             throw new \Exception('Google Drive account not found.');
         }
@@ -39,39 +38,72 @@ class GoogleDriveService
         if ($this->client->isAccessTokenExpired()) {
             if ($this->client->getRefreshToken()) {
                 $this->client->fetchAccessTokenWithRefreshToken($this->client->getRefreshToken());
-
                 $this->account->update([
                     'access_token' => $this->client->getAccessToken()['access_token'],
                     'expires_at' => now()->addSeconds($this->client->getAccessToken()['expires_in']),
                 ]);
+            } else {
+                throw new \Exception('Refresh token missing. Please reconnect this account.');
             }
         }
-
         return $this->client;
     }
 
-    public function listFiles()
+    public function getStorageQuota()
+    {
+        try {
+            $service = new Drive($this->getClient());
+            $about = $service->about->get(['fields' => 'storageQuota']);
+            $quota = $about->getStorageQuota();
+
+            return [
+                'used' => (int) $quota->getUsage(),
+                'limit' => (int) $quota->getLimit(),
+            ];
+        } catch (\Exception $e) {
+            throw new \Exception('Failed to get storage quota: ' . $e->getMessage());
+        }
+    }
+
+    public function listFilesInFolder($folderId = 'root')
     {
         $service = new Drive($this->getClient());
+        $q = "'" . $folderId . "' in parents and trashed = false";
+
+        $response = $service->files->listFiles([
+            'pageSize' => 100,
+            'fields' => 'nextPageToken, files(id, name, mimeType, modifiedTime, size)',
+            'q' => $q,
+            'orderBy' => 'folder, modifiedTime desc'
+        ]);
+        return $response->getFiles();
+    }
+
+    public function searchFiles($query)
+    {
+        $service = new Drive($this->getClient());
+        $q = "name contains '" . addslashes($query) . "' and trashed = false";
+
         $response = $service->files->listFiles([
             'pageSize' => 50,
             'fields' => 'nextPageToken, files(id, name, mimeType, modifiedTime, size)',
-            'q' => "trashed = false",
+            'q' => $q,
             'orderBy' => 'modifiedTime desc'
         ]);
         return $response->getFiles();
     }
 
-    public function getStorageQuota()
+    public function getFileInfo($fileId)
     {
         $service = new Drive($this->getClient());
-        $about = $service->about->get(['fields' => 'storageQuota']);
-        $quota = $about->getStorageQuota();
+        return $service->files->get($fileId, ['fields' => 'id, name, mimeType']);
+    }
 
-        return [
-            'used' => $quota->getUsage() ?? 0,
-            'limit' => $quota->getLimit() ?? 0,
-        ];
+    public function getFileWebViewLink($fileId)
+    {
+        $service = new Drive($this->getClient());
+        $file = $service->files->get($fileId, ['fields' => 'webViewLink']);
+        return $file->getWebViewLink();
     }
 
     public function uploadFile($file, $parentId = null)

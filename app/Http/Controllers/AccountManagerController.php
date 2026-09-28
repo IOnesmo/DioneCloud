@@ -23,10 +23,8 @@ class AccountManagerController extends Controller
             'account_ids.*' => 'integer|exists:linked_accounts,id',
         ]);
 
-        // First, uncheck all accounts for this user
         LinkedAccount::where('user_id', auth()->id())->update(['is_combined' => false]);
 
-        // Then, check only the selected ones
         LinkedAccount::whereIn('id', $request->account_ids)
             ->where('user_id', auth()->id())
             ->update(['is_combined' => true]);

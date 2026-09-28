@@ -24,6 +24,7 @@ class LinkedAccount extends Model
         'expires_at' => 'datetime',
         'access_token' => 'encrypted',
         'refresh_token' => 'encrypted',
+        'is_combined' => 'boolean',
     ];
 
     public function user()
