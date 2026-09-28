@@ -29,6 +29,9 @@ https://github.com/user-attachments/assets/2c3a4fb6-9a9d-465b-85b4-fc75dcba5c2d
 <img width="960" height="445" alt="dash4" src="https://github.com/user-attachments/assets/5927d74a-a09d-46bf-93de-b2a4a3ff30ed" />
 <img width="960" height="443" alt="dash5" src="https://github.com/user-attachments/assets/204e6710-8ee7-4435-b311-4d27afa07292" />
 
+Future Recommendation !
+
+
 Option 1: Advanced File Management (Highly Recommended)
 Make the dashboard feel like a real desktop file manager.
 Drag & Drop Uploads: Allow users to drag files directly from their computer into the browser.
